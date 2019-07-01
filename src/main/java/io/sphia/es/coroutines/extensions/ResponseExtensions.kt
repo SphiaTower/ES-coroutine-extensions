@@ -1,6 +1,7 @@
 package io.sphia.es.coroutines.extensions
 
 import io.sphia.es.coroutines.CoroConfig
+import io.sphia.es.coroutines.ESIndex
 import io.sphia.es.coroutines.orm.DocumentAnalysis
 import org.elasticsearch.action.get.GetResponse
 import org.elasticsearch.action.get.MultiGetResponse
@@ -15,12 +16,21 @@ inline fun <reified T : Any> GetResponse.toDoc(): T? {
 }
 
 fun <T : Any> GetResponse.toDoc(type: KClass<T>): T? {
+    return this.toDoc(type.java)
+}
+
+fun <T : Any> GetResponse.toDoc(type: Class<T>): T? {
     return if (this.isExists) {
-        CoroConfig.documentMapper.fromJsonWithID(this.sourceAsString, this.id, type.java)
+        CoroConfig.documentMapper.fromJsonWithID(this.sourceAsString, this.id, type)
     } else {
         null
     }
 }
+
+fun <T : Any> GetResponse.toDoc(index: ESIndex<T>): T? {
+    return this.toDoc(index.docClass)
+}
+
 
 inline fun <reified T : Any> MultiGetResponse.toDocs(): List<T?> {
     return toDocs(T::class)

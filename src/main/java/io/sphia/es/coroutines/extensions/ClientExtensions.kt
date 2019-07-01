@@ -18,46 +18,46 @@ import org.elasticsearch.client.RestHighLevelClient
 
 
 suspend fun RestHighLevelClient.awaitGet(getRequest: GetRequest, vararg headers: Header): GetResponse {
-    return cpsConvert(getRequest, this::getAsync, headers)
+    return cpsConvert(getRequest, this::getAsync, *headers)
 }
 
 suspend fun RestHighLevelClient.awaitSearch(searchRequest: SearchRequest, vararg headers: Header): SearchResponse {
-    return cpsConvert(searchRequest, this::searchAsync, headers)
+    return cpsConvert(searchRequest, this::searchAsync, *headers)
 }
 
 suspend fun RestHighLevelClient.awaitDelete(deleteRequest: DeleteRequest, vararg headers: Header): DeleteResponse {
-    return cpsConvert(deleteRequest, this::deleteAsync, headers)
+    return cpsConvert(deleteRequest, this::deleteAsync, *headers)
 }
 
 suspend fun RestHighLevelClient.awaitMultiGet(multiGetRequest: MultiGetRequest, vararg headers: Header): MultiGetResponse {
-    return cpsConvert(multiGetRequest, this::multiGetAsync, headers)
+    return cpsConvert(multiGetRequest, this::multiGetAsync, *headers)
 }
 
 suspend fun RestHighLevelClient.awaitMultiSearch(multiSearchRequest: MultiSearchRequest, vararg headers: Header): MultiSearchResponse {
-    return cpsConvert(multiSearchRequest, this::multiSearchAsync, headers)
+    return cpsConvert(multiSearchRequest, this::multiSearchAsync, *headers)
 }
 
 suspend fun RestHighLevelClient.awaitIndex(indexRequest: IndexRequest, vararg headers: Header): IndexResponse {
-    return cpsConvert(indexRequest, this::indexAsync, headers)
+    return cpsConvert(indexRequest, this::indexAsync, *headers)
 }
 
 suspend fun RestHighLevelClient.awaitUpdate(updateRequest: UpdateRequest, vararg headers: Header): UpdateResponse {
-    return cpsConvert(updateRequest, this::updateAsync, headers)
+    return cpsConvert(updateRequest, this::updateAsync, *headers)
 }
 
 suspend fun RestHighLevelClient.awaitBulk(bulkRequest: BulkRequest, vararg headers: Header): BulkResponse {
-    return cpsConvert(bulkRequest, this::bulkAsync, headers)
+    return cpsConvert(bulkRequest, this::bulkAsync, *headers)
 }
 
 suspend fun RestHighLevelClient.awaitExists(existsRequest: GetRequest, vararg headers: Header): Boolean {
-    return cpsConvert(existsRequest, this::existsAsync, headers)
+    return cpsConvert(existsRequest, this::existsAsync, *headers)
 }
 
 suspend fun RestHighLevelClient.awaitScroll(scrollRequest: SearchScrollRequest, vararg headers: Header): SearchResponse {
-    return cpsConvert(scrollRequest, this::searchScrollAsync, headers)
+    return cpsConvert(scrollRequest, this::searchScrollAsync, *headers)
 }
 
 suspend fun RestHighLevelClient.awaitClearScroll(clearScrollRequest: ClearScrollRequest, vararg headers: Header): ClearScrollResponse {
-    return cpsConvert(clearScrollRequest, this::clearScrollAsync, headers)
+    return cpsConvert(clearScrollRequest, this::clearScrollAsync, *headers)
 }
 

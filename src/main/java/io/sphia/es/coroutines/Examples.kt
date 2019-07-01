@@ -30,6 +30,7 @@ internal class Examples {
             val index = "sample_index"
             val type = "_doc"
 
+            val sampleIndex = ESIndex(index, type, SampleDoc::class.java)
             val client = RestHighLevelClient(RestClient.builder(HttpHost.create("http://abc.com:9200")))
 
 
@@ -50,6 +51,8 @@ internal class Examples {
                 }).toDocs(SampleDoc::class)
 
                 val sampleDocs: List<SampleDoc?> = client.awaitMultiGet(MultiGetRequest().add(index, type, "abc")).toDocs()
+
+                sampleIndex.multiGetRequest().await(client).toDocs(SampleDoc::class)
             }
 
 

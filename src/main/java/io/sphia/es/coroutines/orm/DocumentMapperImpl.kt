@@ -1,12 +1,17 @@
 package io.sphia.es.coroutines.orm
 
+import com.google.gson.Gson
+
 
 class DocumentMapperImpl : DocumentMapper {
+
+    private val gson = Gson()
+
     override fun toMapWithoutID(doc: Any): Map<String, Any> {
         return toMapWithoutID(doc, DocumentAnalysis.analyzeCached(doc.javaClass))
     }
 
-    fun toMapWithoutID(doc: Any, analysis: DocumentAnalysis): Map<String, Any> {
+    private fun toMapWithoutID(doc: Any, analysis: DocumentAnalysis): Map<String, Any> {
 
         return analysis.documentFields.mapNotNull {
             val value = it.get(doc)
@@ -20,7 +25,11 @@ class DocumentMapperImpl : DocumentMapper {
     }
 
     override fun <T> fromJsonWithID(json: String, id: String?, docClass: Class<T>): T {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val obj = gson.fromJson(json, docClass)
+        if (id != null) {
+            DocumentAnalysis.analyzeCached(docClass).idField?.set(obj, id)
+        }
+        return obj
     }
 
 
