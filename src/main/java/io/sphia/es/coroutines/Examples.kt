@@ -6,6 +6,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.apache.http.HttpHost
 import org.elasticsearch.action.get.GetRequest
+import org.elasticsearch.action.get.GetResponse
 import org.elasticsearch.action.get.MultiGetRequest
 import org.elasticsearch.action.index.IndexRequest
 import org.elasticsearch.action.search.SearchRequest
@@ -52,7 +53,7 @@ internal class Examples {
 
                 val sampleDocs: List<SampleDoc?> = client.awaitMultiGet(MultiGetRequest().add(index, type, "abc")).toDocs()
 
-                sampleIndex.multiGetRequest().await(client).toDocs(SampleDoc::class)
+                sampleIndex.indexRequest(doc).await(client)
             }
 
 
