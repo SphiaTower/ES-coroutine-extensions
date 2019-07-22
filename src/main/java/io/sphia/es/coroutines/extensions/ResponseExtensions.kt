@@ -2,10 +2,8 @@ package io.sphia.es.coroutines.extensions
 
 import io.sphia.es.coroutines.CoroConfig
 import io.sphia.es.coroutines.ESIndex
-import io.sphia.es.coroutines.orm.DocumentAnalysis
 import org.elasticsearch.action.get.GetResponse
 import org.elasticsearch.action.get.MultiGetResponse
-import org.elasticsearch.action.index.IndexRequest
 import org.elasticsearch.action.search.MultiSearchResponse
 import org.elasticsearch.action.search.SearchResponse
 import kotlin.reflect.KClass
@@ -21,7 +19,7 @@ fun <T : Any> GetResponse.toDoc(type: KClass<T>): T? {
 
 fun <T : Any> GetResponse.toDoc(type: Class<T>): T? {
     return if (this.isExists) {
-        CoroConfig.documentMapper.fromJsonWithID(this.sourceAsString, this.id, type)
+        CoroConfig.documentMapper.fromSourceJson(this.sourceAsString, this.id, type)
     } else {
         null
     }
@@ -45,7 +43,7 @@ inline fun <reified T : Any> SearchResponse.toDocs(): List<T> {
 }
 
 fun <T : Any> SearchResponse.toDocs(type: KClass<T>): List<T> {
-    return this.hits.map { CoroConfig.documentMapper.fromJsonWithID(it.sourceAsString, it.id, type.java) }
+    return this.hits.map { CoroConfig.documentMapper.fromSourceJson(it.sourceAsString, it.id, type.java) }
 }
 
 inline fun <reified T : Any> MultiSearchResponse.parse(): List<List<T>> {
@@ -56,8 +54,3 @@ fun <T : Any> MultiSearchResponse.parse(type: KClass<T>): List<List<T>> {
     return this.responses.map { it.response.toDocs(type) }
 }
 
-
-fun IndexRequest.doc(doc: Any): IndexRequest {
-    val id = DocumentAnalysis.analyzeCached(doc.javaClass).idField?.get(doc) as String?
-    return this.source(CoroConfig.documentMapper.toMapWithoutID(doc)).id(id)
-}

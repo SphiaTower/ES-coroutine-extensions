@@ -5,9 +5,9 @@ import com.google.gson.Gson
 
 class DocumentMapperImpl : DocumentMapper {
 
-    private val gson = Gson()
+    val gson = Gson()
 
-    override fun toMapWithoutID(doc: Any): Map<String, Any> {
+    override fun toSourceMap(doc: Any): Map<String, Any> {
         return toMapWithoutID(doc, DocumentAnalysis.analyzeCached(doc.javaClass))
     }
 
@@ -24,7 +24,7 @@ class DocumentMapperImpl : DocumentMapper {
 
     }
 
-    override fun <T> fromJsonWithID(json: String, id: String?, docClass: Class<T>): T {
+    override fun <T> fromSourceJson(json: String, id: String?, docClass: Class<T>): T {
         val obj = gson.fromJson(json, docClass)
         if (id != null) {
             DocumentAnalysis.analyzeCached(docClass).idField?.set(obj, id)
