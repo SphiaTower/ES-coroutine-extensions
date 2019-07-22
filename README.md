@@ -1,9 +1,6 @@
 # ES-coroutine-extensions
 This library provides some lightweight and non-invasive extension methods for the Elasticsearch `RestHighLevelClient`, supporting ORM and Kotlin coroutines.
 
-## Warning
-This project is still under development and lacks tests, but it's extremely easy to debug:)
-
 ## The Design Principle
 Keep it simple, stupid
 
